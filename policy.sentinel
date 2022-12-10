@@ -1,0 +1,4 @@
+day = "saturday"
+
+is_weekday = rule { day not in ["saturday", "sunday"] }
+main = rule { is_weekday }
