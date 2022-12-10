@@ -1,2 +1,4 @@
-hour = 4
-main = rule { hour >= 0 and hour < 12 }
+day = "saturday"
+
+is_weekday = rule { day not in ["saturday", "sunday"] }
+main = rule { is_weekday }
