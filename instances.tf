@@ -34,12 +34,6 @@ resource "aws_instance" "bastion" {
   }
 }
 
-resource "aws_eip" "bastion-eip" {
-  tags = {
-    Name = "bastion-eip-${var.env}"
-  }
-}
-
 resource "aws_network_interface" "bastion-nic" {
   subnet_id       = data.aws_subnet.subnet_aza.id
   security_groups = [aws_security_group.bastion-sg.id]
