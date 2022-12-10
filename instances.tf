@@ -26,30 +26,19 @@ resource "aws_instance" "bastion" {
 
   tags = {
     Name = "bastion-${var.env}"
-    TF_LastDeployTimestamp = timestamp()
   }
 
+  # workaround for use of default EBS key forcing replacement (see: https://github.com/hashicorp/terraform-provider-aws/issues/13860)
   lifecycle {
-    ignore_changes = [
-      root_block_device[0].kms_key_id, # workaround for use of default EBS key forcing replacement (see: https://github.com/hashicorp/terraform-provider-aws/issues/13860)
-      tags.TF_LastDeployTimestamp
-    ]
+    ignore_changes = [root_block_device[0].kms_key_id]
   }
 }
 
 resource "aws_network_interface" "bastion-nic" {
   subnet_id       = data.aws_subnet.subnet_aza.id
   security_groups = [aws_security_group.bastion-sg.id]
-
   tags = {
     Name = "bastion-nic-${var.env}"
-    TF_LastDeployTimestamp = timestamp()
-  }
-
-  lifecycle {
-    ignore_changes = [
-      tags.TF_LastDeployTimestamp
-    ]
   }
 }
 
@@ -81,15 +70,11 @@ resource "aws_instance" "app-server" {
 
   tags = {
     Name = "app-server-${var.env}"
-    TF_LastDeployTimestamp = timestamp()
   }
 
   # workaround for use of default EBS key forcing replacement (see: https://github.com/hashicorp/terraform-provider-aws/issues/13860)
   lifecycle {
-    ignore_changes = [
-      root_block_device[0].kms_key_id,
-      tags.TF_LastDeployTimestamp
-    ]
+    ignore_changes = [root_block_device[0].kms_key_id]
   }
 }
 
@@ -98,6 +83,5 @@ resource "aws_network_interface" "app-server-nic" {
   security_groups = [aws_security_group.private-sg.id]
   tags = {
     Name = "app-server-nic-${var.env}"
-    TF_LastDeployTimestamp = timestamp()
   }
 }
