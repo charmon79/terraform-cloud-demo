@@ -1,7 +1,7 @@
 ### bastion server
 resource "aws_instance" "bastion" {
   ami           = "ami-02af65b2d1ebdfafc" # Ubuntu Server 20.04 ARM
-  instance_type = "t4g.nano"
+  instance_type = "t4g.micro"
   key_name      = aws_key_pair.aws_sandbox.id
 
   network_interface {
